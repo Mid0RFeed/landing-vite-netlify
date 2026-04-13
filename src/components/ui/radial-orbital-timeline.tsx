@@ -150,7 +150,7 @@ export default function RadialOrbitalTimeline({
 
     const zIndex = Math.round(100 + 50 * Math.cos(radian));
     const opacity = Math.max(
-      0.4,
+      0.75,
       Math.min(1, 0.4 + 0.6 * ((1 + Math.sin(radian)) / 2))
     );
 
@@ -221,50 +221,57 @@ export default function RadialOrbitalTimeline({
                 ref={(el) => {
                   nodeRefs.current[item.id] = el;
                 }}
-                className="absolute cursor-pointer transition-all duration-700"
+                className="absolute transition-all duration-700"
                 style={nodeStyle}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  toggleItem(item.id);
-                }}
               >
-                <div
-                  className={`absolute -inset-1 rounded-full ${
-                    isPulsing ? "animate-pulse duration-1000" : ""
-                  }`}
-                  style={{
-                    background:
-                      "radial-gradient(circle, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 70%)",
-                    width: `${item.energy * 0.5 + 40}px`,
-                    height: `${item.energy * 0.5 + 40}px`,
-                    left: `-${(item.energy * 0.5 + 40 - 40) / 2}px`,
-                    top: `-${(item.energy * 0.5 + 40 - 40) / 2}px`,
+                <button
+                  type="button"
+                  className="relative flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-transparent p-0 text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-200 focus-visible:ring-offset-4 focus-visible:ring-offset-black"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toggleItem(item.id);
                   }}
-                ></div>
-
-                <div
-                  className={`
-                    flex h-10 w-10 items-center justify-center rounded-full border-2 transition-all duration-300
-                    ${
-                      isExpanded
-                        ? "scale-150 border-white bg-white text-black shadow-lg shadow-white/30"
-                        : isRelated
-                          ? "border-white bg-white/50 text-black animate-pulse"
-                          : "border-white/40 bg-black text-white"
-                    }
-                  `}
+                  aria-expanded={isExpanded}
+                  aria-label={`Показать преимущество: ${item.title}`}
                 >
-                  <Icon size={16} />
-                </div>
+                  <div
+                    className={`absolute -inset-1 rounded-full ${
+                      isPulsing ? "animate-pulse duration-1000" : ""
+                    }`}
+                    style={{
+                      background:
+                        "radial-gradient(circle, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 70%)",
+                      width: `${item.energy * 0.5 + 40}px`,
+                      height: `${item.energy * 0.5 + 40}px`,
+                      left: `-${(item.energy * 0.5 + 40 - 40) / 2}px`,
+                      top: `-${(item.energy * 0.5 + 40 - 40) / 2}px`,
+                    }}
+                  ></div>
 
-                <div
-                  className={`
-                    absolute top-12 max-w-[9rem] -translate-x-1/3 whitespace-normal text-center text-[11px] font-semibold tracking-wider transition-all duration-300 sm:max-w-none sm:whitespace-nowrap sm:text-xs
-                    ${isExpanded ? "scale-125 text-white" : "text-white/70"}
-                  `}
-                >
-                  {item.title}
-                </div>
+                  <div
+                    className={`
+                      flex h-10 w-10 items-center justify-center rounded-full border-2 transition-all duration-300
+                      ${
+                        isExpanded
+                          ? "scale-150 border-white bg-white text-black shadow-lg shadow-white/30"
+                          : isRelated
+                            ? "animate-pulse border-white bg-white/50 text-black"
+                            : "border-white/40 bg-black text-white"
+                      }
+                    `}
+                  >
+                    <Icon size={16} aria-hidden="true" />
+                  </div>
+
+                  <span
+                    className={`
+                      absolute top-12 max-w-[9rem] -translate-x-1/3 whitespace-normal text-center text-[11px] font-semibold tracking-wider transition-all duration-300 sm:max-w-none sm:whitespace-nowrap sm:text-xs
+                      ${isExpanded ? "scale-125 text-white" : "text-white/70"}
+                    `}
+                  >
+                    {item.title}
+                  </span>
+                </button>
 
                 {isExpanded && (
                   <Card className="absolute left-1/2 top-20 w-[16.5rem] -translate-x-1/2 overflow-visible border-white/30 bg-black/90 text-white shadow-xl shadow-white/10 backdrop-blur-lg sm:w-72">

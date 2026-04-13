@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 function ElegantShape({
@@ -72,11 +72,27 @@ function ElegantShape({
 function HeroGeometric({
   title1 = "Elevate Your Digital Vision",
   title2 = "Crafting Exceptional Websites",
+  badge,
+  subtitle,
+  primaryCta,
+  secondaryCta,
+  stats = [],
 }: {
   title1?: string;
   title2?: string;
+  badge?: string;
+  subtitle?: string;
+  primaryCta?: {
+    label: string;
+    href: string;
+  };
+  secondaryCta?: {
+    label: string;
+    href: string;
+  };
+  stats?: string[];
 }) {
-  const fadeUpVariants = {
+  const fadeUpVariants: Variants = {
     hidden: { opacity: 0, y: 30 },
     visible: (i: number) => ({
       opacity: 1,
@@ -84,13 +100,13 @@ function HeroGeometric({
       transition: {
         duration: 1,
         delay: 0.5 + i * 0.2,
-        ease: [0.25, 0.4, 0.25, 1],
+        ease: [0.25, 0.4, 0.25, 1] as const,
       },
     }),
   };
 
   return (
-    <div className="relative flex min-h-screen w-full items-center justify-center overflow-hidden bg-[#030303] text-center [font-family:'General_Sans',Inter,sans-serif]">
+    <div className="relative flex min-h-[calc(100vh-65px)] w-full items-center justify-center overflow-hidden bg-[#030303] text-center [font-family:'General_Sans',Inter,sans-serif]">
       <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/[0.05] via-transparent to-rose-500/[0.05] blur-3xl" />
 
       <div className="absolute inset-0 overflow-hidden">
@@ -140,10 +156,21 @@ function HeroGeometric({
         />
       </div>
 
-      <div className="container relative z-10 mx-auto flex justify-center px-4 md:px-6">
+      <div className="container relative z-10 mx-auto flex justify-center px-4 py-24 md:px-6">
         <div className="mx-auto flex w-full max-w-4xl flex-col items-center text-center">
+          {badge ? (
+            <motion.div
+              custom={0}
+              variants={fadeUpVariants}
+              initial="hidden"
+              animate="visible"
+              className="mb-5 rounded-lg border border-white/15 bg-white/[0.08] px-4 py-2 text-sm font-medium text-cyan-100 backdrop-blur"
+            >
+              {badge}
+            </motion.div>
+          ) : null}
           <motion.div custom={1} variants={fadeUpVariants} initial="hidden" animate="visible">
-            <h1 className="mb-6 text-center text-4xl font-bold tracking-tight sm:text-6xl md:mb-8 md:text-8xl">
+            <h1 className="mb-6 text-center text-4xl font-bold sm:text-6xl md:mb-8 md:text-7xl">
               <span className="bg-gradient-to-b from-white to-white/80 bg-clip-text text-transparent">
                 {title1}
               </span>
@@ -153,6 +180,63 @@ function HeroGeometric({
               </span>
             </h1>
           </motion.div>
+          {subtitle ? (
+            <motion.p
+              custom={2}
+              variants={fadeUpVariants}
+              initial="hidden"
+              animate="visible"
+              className="mx-auto max-w-3xl text-base leading-8 text-white/70 md:text-lg"
+            >
+              {subtitle}
+            </motion.p>
+          ) : null}
+          {primaryCta || secondaryCta ? (
+            <motion.div
+              custom={3}
+              variants={fadeUpVariants}
+              initial="hidden"
+              animate="visible"
+              className="mt-8 flex flex-wrap justify-center gap-3"
+            >
+              {primaryCta ? (
+                <a
+                  href={primaryCta.href}
+                  target={primaryCta.href.startsWith("http") ? "_blank" : undefined}
+                  rel={primaryCta.href.startsWith("http") ? "noreferrer" : undefined}
+                  className="rounded-lg bg-white px-5 py-3 text-sm font-semibold text-black transition hover:bg-cyan-100"
+                >
+                  {primaryCta.label}
+                </a>
+              ) : null}
+              {secondaryCta ? (
+                <a
+                  href={secondaryCta.href}
+                  className="rounded-lg border border-white/20 px-5 py-3 text-sm font-semibold text-white transition hover:border-cyan-200"
+                >
+                  {secondaryCta.label}
+                </a>
+              ) : null}
+            </motion.div>
+          ) : null}
+          {stats.length > 0 ? (
+            <motion.div
+              custom={4}
+              variants={fadeUpVariants}
+              initial="hidden"
+              animate="visible"
+              className="mt-8 flex flex-wrap justify-center gap-2"
+            >
+              {stats.map((stat) => (
+                <span
+                  key={stat}
+                  className="rounded-md border border-white/10 bg-white/[0.06] px-3 py-2 text-sm text-white/70"
+                >
+                  {stat}
+                </span>
+              ))}
+            </motion.div>
+          ) : null}
         </div>
       </div>
 

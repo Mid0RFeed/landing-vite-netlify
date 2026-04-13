@@ -120,6 +120,8 @@ const Gallery4 = ({
           </div>
           <div className="hidden shrink-0 gap-2 md:flex">
             <Button
+              type="button"
+              aria-label="Предыдущий кейс"
               size="icon"
               variant="ghost"
               onClick={() => {
@@ -128,9 +130,11 @@ const Gallery4 = ({
               disabled={!canScrollPrev}
               className="disabled:pointer-events-auto"
             >
-              <ArrowLeft className="size-5" />
+              <ArrowLeft className="size-5" aria-hidden="true" />
             </Button>
             <Button
+              type="button"
+              aria-label="Следующий кейс"
               size="icon"
               variant="ghost"
               onClick={() => {
@@ -139,7 +143,7 @@ const Gallery4 = ({
               disabled={!canScrollNext}
               className="disabled:pointer-events-auto"
             >
-              <ArrowRight className="size-5" />
+              <ArrowRight className="size-5" aria-hidden="true" />
             </Button>
           </div>
         </div>
@@ -161,11 +165,12 @@ const Gallery4 = ({
                 key={item.id}
                 className="max-w-[320px] pl-0 lg:max-w-[360px]"
               >
-                <a href={item.href} className="group rounded-xl">
-                  <div className="group relative h-full min-h-[27rem] max-w-full overflow-hidden rounded-xl md:aspect-[5/4] lg:aspect-[16/9]">
+                <a href={item.href} className="group rounded-lg">
+                  <div className="group relative h-full min-h-[27rem] max-w-full overflow-hidden rounded-lg md:aspect-[5/4] lg:aspect-[16/9]">
                     <img
                       src={item.image}
-                      alt={item.title}
+                      alt=""
+                      aria-hidden="true"
                       className="absolute h-full w-full object-cover object-center transition-transform duration-300 group-hover:scale-105"
                     />
                     <div className="absolute inset-0 h-full bg-[linear-gradient(hsl(var(--primary)/0),hsl(var(--primary)/0.4),hsl(var(--primary)/0.8)_100%)] mix-blend-multiply" />
@@ -190,13 +195,19 @@ const Gallery4 = ({
         <div className="mt-8 flex justify-center gap-2">
           {items.map((_, index) => (
             <button
+              type="button"
               key={index}
-              className={`h-2 w-2 rounded-full transition-colors ${
-                currentSlide === index ? "bg-primary" : "bg-primary/20"
-              }`}
+              className="flex h-8 w-8 items-center justify-center rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
               onClick={() => carouselApi?.scrollTo(index)}
               aria-label={`Перейти к слайду ${index + 1}`}
-            />
+              aria-current={currentSlide === index ? "true" : undefined}
+            >
+              <span
+                className={`h-2 w-2 rounded-full transition-colors ${
+                  currentSlide === index ? "bg-primary" : "bg-primary/20"
+                }`}
+              />
+            </button>
           ))}
         </div>
       </div>
